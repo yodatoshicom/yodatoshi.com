@@ -660,16 +660,13 @@
     master.gain.setTargetAtTime(0, t, 0.3);
   }
 
-  function buzzClick() {
-    buzzOn();
-    buzzOff(0.9);
-  }
-
   const sign = document.getElementById('neonSign');
   sign.addEventListener('mouseenter', buzzOn);
   sign.addEventListener('mouseleave', () => buzzOff(0));
-  sign.addEventListener('click',      buzzClick);
-  sign.addEventListener('touchstart', e => { e.preventDefault(); buzzClick(); }, { passive: false });
+
+  // stop sound when leaving or hiding the page
+  document.addEventListener('visibilitychange', () => { if (document.hidden) buzzOff(0); });
+  window.addEventListener('blur', () => buzzOff(0));
 
   // ── TAB SWITCHER ───────────────────────────────────────────
   document.querySelector('.tab-nav').addEventListener('click', e => {
