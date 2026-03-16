@@ -149,23 +149,32 @@
     .bio {
       width: 100%;
       text-align: center;
-      position: relative;
-      border: 1px solid rgba(0, 255, 240, 0.12);
-      padding: 28px 32px 24px;
-      box-shadow: 0 0 18px rgba(0, 255, 240, 0.04), inset 0 0 24px rgba(0, 255, 240, 0.02);
     }
-    .bio::before {
-      content: '> sys.info';
-      position: absolute;
-      top: -0.58em;
-      left: 18px;
-      background: var(--bg);
-      padding: 0 8px;
+    .bio-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .bio-divider::before,
+    .bio-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(0,255,240,0.25));
+      max-width: 80px;
+    }
+    .bio-divider::after {
+      background: linear-gradient(to left, transparent, rgba(0,255,240,0.25));
+    }
+    .bio-divider span {
       font-size: 0.62rem;
       letter-spacing: 0.28em;
       color: var(--cyan);
       text-shadow: 0 0 8px var(--cyan);
       font-family: 'Courier Prime', monospace;
+      white-space: nowrap;
     }
     .bio-cursor {
       display: inline-block;
@@ -462,6 +471,7 @@
 
   <!-- ── BIO ── -->
   <section class="bio">
+    <div class="bio-divider"><span>&gt; sys.info</span></div>
     <p class="bio-text">
       builder of <strong>small tools</strong> and <strong>strange ideas</strong>.<br>
       writes code at odd hours. ships when it feels right.<br>
