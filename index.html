@@ -23,6 +23,9 @@
   <meta name="twitter:description" content="builder of small tools and strange ideas. writes code at odd hours. ships when it feels right. drawn to the edges — where systems break and become something new.">
   <meta name="twitter:image"       content="https://yodatoshi.com/preview.png">
 
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="favicon-180.png">
   <title>yodatoshi</title>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="5cfbeffd-8dc5-4f7e-bbf1-032899d35ee0"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -275,204 +278,211 @@
 
 
     /* ────────────────────────────────
-       TABS
-    ──────────────────────────────── */
-    .tabs-wrap {
-      width: 100%;
-    }
-
-    .tab-nav {
-      display: flex;
-      gap: 0;
-      margin-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tab-btn {
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      padding: 8px 20px;
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .tab-btn:hover { color: var(--text); }
-
-    .tab-btn.active {
-      color: var(--pink);
-      border-bottom-color: var(--pink);
-      text-shadow: 0 0 8px var(--pink);
-    }
-
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* ────────────────────────────────
        PROJECTS
     ──────────────────────────────── */
     .projects {
       width: 100%;
+      text-align: center;
     }
 
     .project-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 14px;
+      width: 120%;
+      margin-left: -10%;
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       .project-grid { grid-template-columns: 1fr; }
     }
 
     .project-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 22px 22px 18px;
+      background: rgba(13,13,26,0.8);
+      border: 1px solid rgba(28,28,46,0.6);
+      border-radius: 12px;
+      padding: 32px 28px 26px;
       text-decoration: none;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
       position: relative;
       overflow: hidden;
-      transition: border-color 0.3s, box-shadow 0.3s;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* top accent line */
     .project-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 10%; right: 10%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      inset: 0;
+      border-radius: 12px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,45,120,0.04) 0%, transparent 70%);
       opacity: 0;
-      transition: opacity 0.35s;
+      transition: opacity 0.4s;
     }
 
     .project-card:hover {
-      border-color: rgba(0,255,240,0.25);
-      box-shadow: 0 0 24px rgba(0,255,240,0.06),
-                  inset 0 0 20px rgba(0,255,240,0.03);
+      border-color: rgba(255,45,120,0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3),
+                  0 0 1px rgba(255,45,120,0.12);
     }
 
     .project-card:hover::before { opacity: 1; }
 
-    .project-name {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #e8e8f5;
+    .project-status {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 5px;
     }
 
-    .arrow {
-      color: var(--cyan);
-      font-size: 0.85rem;
-      display: inline-block;
-      transition: transform 0.2s;
+    .project-status.live {
+      color: rgba(0,255,240,0.7);
     }
 
-    .project-card:hover .arrow { transform: translateX(4px); }
+    .project-status.oss {
+      color: var(--text-dim);
+    }
+
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 6px currentColor;
+      animation: statusPulse 2.5s ease-in-out infinite;
+    }
+
+    .project-status.oss .status-dot {
+      animation: none;
+      opacity: 0.6;
+    }
+
+    .project-status.soon {
+      color: var(--pink-dim);
+    }
+
+    .project-status.soon .status-dot {
+      animation: statusPulse 4s ease-in-out infinite;
+    }
+
+    .project-card.soon-card {
+      grid-column: 1 / -1;
+      border-style: dashed;
+      border-color: rgba(255,45,120,0.12);
+      cursor: default;
+    }
+
+    .project-card.soon-card .project-name {
+      opacity: 0.5;
+      letter-spacing: 0.15em;
+    }
+
+    .project-card.soon-card .project-desc {
+      opacity: 0.35;
+      font-style: italic;
+    }
+
+    .project-card.soon-card:hover {
+      border-color: rgba(255,45,120,0.2);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3),
+                  0 0 1px rgba(255,45,120,0.1);
+    }
+
+    .project-card.soon-card::before {
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,45,120,0.04) 0%, transparent 70%);
+    }
+
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .project-name {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #e8e8f5;
+      letter-spacing: 0.05em;
+      position: relative;
+    }
+
+    .project-name::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      right: 50%;
+      height: 1px;
+      background: #ff2d78;
+      box-shadow: 0 0 8px rgba(255,45,120,0.5);
+      transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                  right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .project-card:hover .project-name::after {
+      left: 20%;
+      right: 20%;
+    }
 
     .project-desc {
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      line-height: 1.65;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.75;
+      max-width: 420px;
     }
 
     .project-tags {
       margin-top: 4px;
       display: flex;
+      justify-content: center;
       gap: 8px;
       flex-wrap: wrap;
     }
 
     .tag {
-      font-size: 0.6rem;
+      font-size: 0.62rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--yellow);
-      opacity: 0.65;
+      opacity: 0.7;
+      padding: 3px 7px 2px;
+      border: 1px solid rgba(255,224,64,0.18);
+      border-radius: 3px;
     }
 
-    /* ────────────────────────────────
-       FUTURE IDEAS
-    ──────────────────────────────── */
-    .idea-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 26px 24px 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 14px;
-    }
-
-    .idea-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 10%; right: 10%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--pink), transparent);
-      opacity: 0.4;
-    }
-
-    .idea-name {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #e8e8f5;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .idea-name::before {
-      content: '✦';
-      font-size: 0.6rem;
-      color: var(--pink);
-      text-shadow: 0 0 6px var(--pink);
-    }
-
-    .idea-desc {
-      font-size: 0.85rem;
-      color: var(--text);
-      line-height: 1.75;
-    }
-
-    .idea-stack {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      line-height: 1.6;
-    }
-
-    .idea-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
 
 
     /* ────────────────────────────────
        FOOTER
     ──────────────────────────────── */
     footer {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .section-line {
+      width: 100%;
+      max-width: 120px;
+      height: 2px;
+      background: var(--border);
+      border: none;
+      border-radius: 1px;
+    }
+
+    .footer-text {
       font-size: 0.65rem;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: var(--text-dim);
-      opacity: 0.35;
-      text-align: center;
+      opacity: 0.2;
     }
   </style>
 </head>
@@ -495,8 +505,8 @@
     <p class="bio-text">
       builder of <strong>small tools</strong> and <strong>strange ideas</strong>.<br>
       writes code at odd hours. ships when it feels right.<br>
-      drawn to the edges — where systems break<br>
-      and become something new.<span class="bio-cursor"></span>
+      drawn to the edges, where systems break<br>
+      and become something new.
     </p>
     <nav class="bio-links">
       <a href="https://github.com/yodatoshicom" target="_blank" aria-label="GitHub" title="github">
@@ -513,130 +523,47 @@
     </nav>
   </section>
 
-  <!-- ── TABS ── -->
-  <div class="tabs-wrap">
-    <nav class="tab-nav">
-      <button class="tab-btn active" data-tab="projects">// projects</button>
-      <button class="tab-btn" data-tab="ideas">// my agent ideas</button>
-    </nav>
-
-    <!-- PROJECTS PANEL -->
-    <div class="tab-panel active" id="tab-projects">
+  <!-- ── PROJECTS ── -->
+  <section class="projects">
+    <span class="section-tag">// projects</span>
+    <hr class="section-line" style="max-width: 60%; margin: 0 auto 22px; background: linear-gradient(to right, transparent, var(--border), var(--border), transparent);">
     <div class="project-grid">
 
       <a class="project-card" href="https://vallley.xyz" target="_blank">
-        <div class="project-name"><span class="arrow">→</span>vallley</div>
-        <div class="project-desc">job board for fast-growing startups around the world or remote.</div>
+        <span class="project-status live"><span class="status-dot"></span>live</span>
+        <div class="project-name">vallley</div>
+        <div class="project-desc">job board for fast growing startups around the world.</div>
         <div class="project-tags"><span class="tag">jobs</span><span class="tag">python</span></div>
       </a>
 
       <a class="project-card" href="https://github.com/yodatoshicom/dott" target="_blank">
-        <div class="project-name"><span class="arrow">→</span>dott cli</div>
-        <div class="project-desc">a cli for domain search without the middlemen of registrars that might be logging your searches.</div>
+        <span class="project-status oss"><span class="status-dot"></span>open source</span>
+        <div class="project-name">dott</div>
+        <div class="project-desc">search domains from your terminal. no middlemen.</div>
         <div class="project-tags"><span class="tag">cli</span><span class="tag">rust</span></div>
       </a>
 
       <a class="project-card" href="https://weekdash.com" target="_blank">
-        <div class="project-name"><span class="arrow">→</span>weekdash</div>
-        <div class="project-desc">simple dashboard to organize thoughts and plan future things.</div>
+        <span class="project-status live"><span class="status-dot"></span>live</span>
+        <div class="project-name">weekdash</div>
+        <div class="project-desc">one screen to plan your week and track what matters.</div>
         <div class="project-tags"><span class="tag">productivity</span><span class="tag">ts</span></div>
       </a>
 
+      <div class="project-card soon-card">
+        <span class="project-status soon"><span class="status-dot"></span>soon</span>
+        <div class="project-name">???</div>
+        <div class="project-desc">something is being built.</div>
+      </div>
+
     </div>
-    </div><!-- end tab-projects -->
+  </section>
 
-    <!-- MY AGENT IDEAS PANEL -->
-    <div class="tab-panel" id="tab-ideas">
+  <hr class="section-line">
 
-      <div class="idea-card">
-        <div class="idea-name">trace</div>
-        <div class="idea-desc">shows you exactly which apps on your mac are making network requests right now and where to. terminal-first, free, open source. no gui, no subscription. just you seeing what your machine is actually doing.</div>
-        <div class="idea-tags"><span class="tag">privacy</span><span class="tag">macos</span><span class="tag">rust</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">molt</div>
-        <div class="idea-desc">finds and deletes every trace of an app after you uninstall it. caches, configs, logs, launchagents — all of it. mac only. because dragging to trash never actually removes anything.</div>
-        <div class="idea-tags"><span class="tag">macos</span><span class="tag">cli</span><span class="tag">rust</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">echo</div>
-        <div class="idea-desc">runs silently in the background and logs everything you type locally. at midnight it surfaces the words, topics, and names you typed most. no cloud, no uploads. just you learning what your brain was actually obsessing over today.</div>
-        <div class="idea-tags"><span class="tag">introspection</span><span class="tag">rust</span><span class="tag">local-first</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">wire</div>
-        <div class="idea-desc">hide encrypted messages inside ordinary images. send a photo of your coffee, receiver runs it through wire and reads your message. no accounts, no servers, no metadata trail. steganography as a daily communication layer.</div>
-        <div class="idea-tags"><span class="tag">crypto</span><span class="tag">privacy</span><span class="tag">rust</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">fold</div>
-        <div class="idea-desc">drag any file onto it — binary, code, music, archive — and it renders a unique piece of abstract art from the raw byte patterns. a visual fingerprint of data. every file looks different. some are beautiful.</div>
-        <div class="idea-tags"><span class="tag">generative</span><span class="tag">visualization</span><span class="tag">canvas</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">dead drop</div>
-        <div class="idea-desc">leave a message pinned to a GPS coordinate. anyone who walks within 20 meters can read it. the message disappears after one read. like finding a note tucked under a park bench — except global and encrypted.</div>
-        <div class="idea-tags"><span class="tag">location</span><span class="tag">privacy</span><span class="tag">ts</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">séance</div>
-        <div class="idea-desc">upload someone's writing — emails, journals, essays — and talk to a model trained only on their words. not a chatbot. not therapy. something stranger. a way to sit with a voice that no longer exists.</div>
-        <div class="idea-tags"><span class="tag">ai</span><span class="tag">grief</span><span class="tag">python</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">moth</div>
-        <div class="idea-desc">a personal site builder with one hard rule: the entire page must fit under 10kb. forces you to strip everything to what actually matters. your words, one image, one link. nothing else survives the constraint.</div>
-        <div class="idea-tags"><span class="tag">web</span><span class="tag">minimalism</span><span class="tag">go</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">undertow</div>
-        <div class="idea-desc">pulls your browser history and maps the invisible patterns in how you move through the web. which sites you always visit after which. which rabbit holes you fall into at 2am. your browsing as a map of your mind.</div>
-        <div class="idea-tags"><span class="tag">analysis</span><span class="tag">local-first</span><span class="tag">python</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">half-life</div>
-        <div class="idea-desc">a social network where the more a post gets liked, the less visible it becomes. popularity buries things instead of surfacing them. the best stuff is always one layer down. you have to actually look.</div>
-        <div class="idea-tags"><span class="tag">social</span><span class="tag">anti-algorithm</span><span class="tag">go</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">residue</div>
-        <div class="idea-desc">you can only post about an event 30 days after it happened. no live-tweeting. no hot takes. by the time you can post, the noise has settled and you actually know how you feel. social media as reflection instead of reaction.</div>
-        <div class="idea-tags"><span class="tag">social</span><span class="tag">slow</span><span class="tag">ts</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">pulse</div>
-        <div class="idea-desc">your typing rhythm is as unique as a fingerprint. pulse captures the timing between your keystrokes and builds a biometric signature from it. passive, local, and eerie. no two people type the same word the same way.</div>
-        <div class="idea-tags"><span class="tag">biometric</span><span class="tag">security</span><span class="tag">js</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">void</div>
-        <div class="idea-desc">bookmarks that expire in 7 days unless you actively save them. forces you to decide what actually matters vs what you were just going to read later. your reading list as an act of intention, not accumulation.</div>
-        <div class="idea-tags"><span class="tag">tools</span><span class="tag">minimalism</span><span class="tag">ts</span></div>
-      </div>
-
-      <div class="idea-card">
-        <div class="idea-name">witness</div>
-        <div class="idea-desc">posts are only visible to people who were physically near you in the last 24 hours. your content exists in a radius, not a feed. no followers, no reach. just the people who were actually there.</div>
-        <div class="idea-tags"><span class="tag">social</span><span class="tag">location</span><span class="tag">rust</span></div>
-      </div>
-
-    </div><!-- end tab-ideas -->
-
-  </div><!-- end tabs-wrap -->
-
-  <footer>yodatoshi &middot; 2025</footer>
+  <footer>
+    <span class="footer-text">yodatoshi</span>
+  </footer>
 
 </div>
 
@@ -740,20 +667,66 @@
   sign.addEventListener('mouseenter', buzzOn);
   sign.addEventListener('mouseleave', () => buzzOff(0));
 
+  // mobile touch support
+  let touchBuzzing = false;
+  sign.addEventListener('touchstart', e => {
+    e.preventDefault();
+    touchBuzzing = !touchBuzzing;
+    touchBuzzing ? buzzOn() : buzzOff(0);
+  }, { passive: false });
+
   // stop sound when leaving or hiding the page
-  document.addEventListener('visibilitychange', () => { if (document.hidden) buzzOff(0); });
-  window.addEventListener('blur', () => buzzOff(0));
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { buzzOff(0); touchBuzzing = false; } });
+  window.addEventListener('blur', () => { buzzOff(0); touchBuzzing = false; });
 
-  // ── TAB SWITCHER ───────────────────────────────────────────
-  document.querySelector('.tab-nav').addEventListener('click', e => {
-    const btn = e.target.closest('.tab-btn');
-    if (!btn) return;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-  });
+  // ── MYSTERY CARD ────────────────────────────────────────────
+  const soonCard = document.querySelector('.soon-card');
+  if (soonCard) {
+    const phrases = [
+      'something is being built.',
+      'not ready to talk about it yet.',
+      'you\'ll know when it ships.',
+      'still in the dark.',
+      'patience.',
+      'the pieces are moving.',
+      'almost real.',
+      'it keeps changing shape.',
+    ];
 
+    // random phrase on each visit
+    const desc = soonCard.querySelector('.project-desc');
+    desc.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+
+    // click glitch
+    soonCard.addEventListener('click', () => {
+      const name = soonCard.querySelector('.project-name');
+      const orig = name.textContent;
+      soonCard.style.transition = 'none';
+      soonCard.style.transform = 'translateX(' + (Math.random() * 4 - 2) + 'px)';
+      name.style.opacity = '0.15';
+      desc.style.opacity = '0';
+
+      setTimeout(() => {
+        name.textContent = '??¿?';
+        name.style.opacity = '0.5';
+      }, 60);
+
+      setTimeout(() => {
+        soonCard.style.transform = 'translateX(' + (Math.random() * -3) + 'px)';
+        name.textContent = '?!?';
+        name.style.opacity = '0.3';
+      }, 140);
+
+      setTimeout(() => {
+        desc.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        desc.style.opacity = '0.35';
+        name.textContent = '???';
+        name.style.opacity = '0.5';
+        soonCard.style.transition = '';
+        soonCard.style.transform = '';
+      }, 300);
+    });
+  }
 
 </script>
 </body>
